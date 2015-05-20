@@ -116,7 +116,7 @@ module.exports = function(grunt) {
       //string
       "seleniumAddress", "seleniumServerJar", "seleniumPort", "baseUrl",
       "rootElement", "browser", "chromeDriver", "chromeOnly", "sauceUser",
-      "sauceKey", "framework",
+      "sauceKey", "framework", "suite",
       //list
       "specs","exclude",
       //boolean
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
     var specs=suppliedArgs.specs || [];
     var excludes=suppliedArgs.exclude || [];
     suppliedArgs.specs=[];
-    specs = specs.concat(pConfigs.config.specs || []);
+    specs = specs.concat(pConfigs.config.suites[suppliedArgs['suite']] || pConfigs.config.specs || []);
     excludes= excludes.concat(pConfigs.config.exclude || []);
     excludes=grunt.file.expand(excludes);
     grunt.verbose.writeln("Provided specs:", specs);
@@ -155,6 +155,8 @@ module.exports = function(grunt) {
     grunt.verbose.writeln("Expanded specs:", files);
     //for each spec file, wrap each method call with a closure to save the coverage object
     suppliedArgs.specs=files.map(function(file){return instrumentSpecFile(saveCoverageAST, file);});
+
+    delete suppliedArgs['suite'];
 
     args = args
       .concat(dargs(suppliedArgs, {
