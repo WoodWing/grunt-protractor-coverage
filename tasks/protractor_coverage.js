@@ -77,7 +77,7 @@ module.exports = function(grunt) {
     return newSpecFile;
   }
 
-  grunt.registerMultiTask('protractor_coverage', 'Instrument your code and gather coverage data from Protractor E2E tests', function() {
+  grunt.registerMultiTask('protractorCoverage', 'Instrument your code and gather coverage data from Protractor E2E tests', function() {
     // '.../node_modules/protractor/lib/protractor.js'
     var protractorMainPath = require.resolve('protractor');
     // '.../node_modules/protractor/bin/protractor'
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
     var specs=suppliedArgs.specs || [];
     var excludes=suppliedArgs.exclude || [];
     suppliedArgs.specs=[];
-    specs = specs.concat(pConfigs.config.suites[suppliedArgs['suite']] || pConfigs.config.specs || []);
+    specs = specs.concat((pConfigs.config.suites && pConfigs.config.suites[suppliedArgs['suite']]) || pConfigs.config.specs || []);
     excludes= excludes.concat(pConfigs.config.exclude || []);
     excludes=grunt.file.expand(excludes);
     grunt.verbose.writeln("Provided specs:", specs);
